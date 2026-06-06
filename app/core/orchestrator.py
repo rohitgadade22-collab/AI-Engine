@@ -1,4 +1,5 @@
 from app.services.face_service import FaceService
+from app.core.result_cache import result_cache
 
 
 class AIOrchestrator:
@@ -16,6 +17,8 @@ class AIOrchestrator:
         result = {}
 
         result["face"] = self.face_service.analyze(frame)
+
+        result_cache.set_result(result)
 
         return result
 

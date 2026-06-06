@@ -1,0 +1,57 @@
+                 PERTO AI ENGINE
+
++--------------------------------------------------+
+
+ Camera Manager (30 FPS)
+
+            │
+
+            ▼
+
+      AI Worker Thread
+
+            │
+
+            ▼
+
+      AI Orchestrator
+
+            │
+
+----------------------------------------------------
+
+│                │                │
+
+FaceService   MaskService    HelmetService
+
+----------------------------------------------------
+
+            │
+
+            ▼
+
+      Event Generator
+
+            │
+
+            ▼
+
+      Event Queue (Memory)
+
+            │
+
+            ▼
+
+      Sync Worker
+
+            │
+
+            ▼
+
+     ASP.NET Core Server
+
+            │
+
+            ▼
+
+      React Dashboard

@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from app.api.health import router as health_router
 from app.api.analyze import router as analyze_router
+from app.api.status import router as status_router
 
 from app.camera.camera_manager import camera_manager
 from app.core.orchestrator import orchestrator
@@ -16,6 +17,10 @@ app = FastAPI(
 # Register APIs
 app.include_router(health_router, prefix="/api/v1")
 app.include_router(analyze_router, prefix="/api/v1")
+app.include_router(
+    status_router,
+    prefix="/api/v1"
+)
 
 
 @app.on_event("startup")
