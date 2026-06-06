@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from app.camera.camera_manager import camera_manager
+from app.core.orchestrator import orchestrator
 
 router = APIRouter(tags=["Analyze"])
 
@@ -16,17 +17,14 @@ def analyze():
             "message": "No frame available"
         }
 
-    height, width = frame.shape[:2]
+    result = orchestrator.analyze(frame)
 
     return {
 
         "success": True,
 
-        "cameraConnected": True,
+        "camera": camera_manager.health(),
 
-        "frameAvailable": True,
+        "result": result
 
-        "width": width,
-
-        "height": height
     }
