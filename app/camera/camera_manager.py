@@ -17,12 +17,37 @@ class CameraManager:
 
         logger.info("Initializing Camera")
 
-        self.cap = cv2.VideoCapture(0)
+        # Use DirectShow backend
+        self.cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
         if not self.cap.isOpened():
 
             logger.error("Camera not found")
             return
+
+        # Request HD resolution
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+
+        # Request FPS
+        self.cap.set(cv2.CAP_PROP_FPS, 30)
+
+        # Enable autofocus if supported
+        self.cap.set(cv2.CAP_PROP_AUTOFOCUS, 1)
+
+        # Reduce buffering
+        self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+
+        logger.info(
+            f"Camera Resolution : "
+            f"{self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)} x "
+            f"{self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)}"
+        )
+
+        logger.info(
+            f"Camera FPS : "
+            f"{self.cap.get(cv2.CAP_PROP_FPS)}"
+        )
 
         self.running = True
 

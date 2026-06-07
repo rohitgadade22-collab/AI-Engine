@@ -1,4 +1,4 @@
-from app.services.face_service import FaceService
+from app.services.face.face_service import FaceService
 from app.core.result_cache import result_cache
 
 

@@ -1,30 +1,29 @@
 from fastapi import APIRouter
-from app.camera.camera_manager import camera_manager
-from app.core.orchestrator import orchestrator
+
+from app.core.result_cache import result_cache
 
 router = APIRouter(tags=["Analyze"])
 
 
 @router.post("/analyze")
+
 def analyze():
 
-    frame = camera_manager.get_frame()
+    result = result_cache.get_result()
 
-    if frame is None:
+    if result is None:
 
         return {
-            "success": False,
-            "message": "No frame available"
-        }
 
-    result = orchestrator.analyze(frame)
+            "success": False,
+
+            "message": "AI Worker has not produced any result."
+
+        }
 
     return {
 
         "success": True,
-
-        "camera": camera_manager.health(),
-
         "result": result
 
     }
