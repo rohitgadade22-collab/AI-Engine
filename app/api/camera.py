@@ -6,8 +6,8 @@ import time
 from app.camera.camera_manager import camera_manager
 from fastapi.responses import Response
 
-from app.core import result_cache
-from app.services.overlay import overlay_service
+from app.core.result_cache import result_cache
+from app.services.overlay.overlay_service import overlay_service
 
 router = APIRouter(
     tags=["Camera"]

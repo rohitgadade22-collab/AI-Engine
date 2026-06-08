@@ -1,12 +1,19 @@
 from app.registration.registration_state import RegistrationState
 from app.registration.stable_face_service import stable_face_service
+from app.registration.countdown_service import CountdownService
 
 
 class RegistrationManager:
 
+    def __init__(self):
+
+        self.countdown_service = CountdownService()
+
     def process(self, registration):
 
         if not registration["ready"]:
+
+            self.countdown_service.reset()
 
             return {
 
@@ -18,31 +25,43 @@ class RegistrationManager:
 
             }
 
-        stable = stable_face_service.process(
+        stable = stable_face_service.process(registration)
 
-            registration
+        if not stable["stable"]:
 
-        )
-
-        if stable["stable"]:
+            self.countdown_service.reset()
 
             return {
 
-                "state": RegistrationState.READY.value,
+                "state": RegistrationState.HOLD_STILL.value,
 
-                "instruction": "READY",
+                "instruction": "Hold Still",
 
-                "countdown": 0
+                "countdown": stable["countdown"]
+
+            }
+
+        completed = self.countdown_service.update()
+
+        if not completed:
+
+            return {
+
+                "state": RegistrationState.READY_TO_CAPTURE.value,
+
+                "instruction": "Get Ready",
+
+                "countdown": self.countdown_service.remaining
 
             }
 
         return {
 
-            "state": RegistrationState.HOLD_STILL.value,
+            "state": RegistrationState.CAPTURING.value,
 
-            "instruction": "Hold Still",
+            "instruction": "Capturing",
 
-            "countdown": stable["countdown"]
+            "countdown": 0
 
         }
 
